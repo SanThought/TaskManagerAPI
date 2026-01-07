@@ -16,41 +16,53 @@ public sealed class TasksController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<IEnumerable<TaskReadDto>> GetAll()
-    {
-        var tasks = _service.GetAll();
-        return Ok(tasks);
-    }
+    public async Task<ActionResult<IEnumerable<TaskReadDto>>> GetAll(CancellationToken ct)
+        => Ok(await _service.GetAllAsync(ct));
 
     [HttpGet("{id:int}")]
-    public ActionResult<TaskReadDto> GetById(int id)
+    public async Task<ActionResult<TaskReadDto>> GetById(int id, CancellationToken ct)
     {
-        var task = _service.GetById(id);
-        return task is null ? NotFound() : Ok(task);
+        var task = await _service.GetByIdAsync(id, ct);
+        if (task is not null) return Ok(task);
+
+        return NotFound(new ProblemDetails
+        {
+            Title = "Task not found.",
+            Status = StatusCodes.Status404NotFound,
+            Type = "https://httpstatuses.com/404",
+            Detail = $"No task with id {id} was found.",
+            Instance = HttpContext.Request.Path
+        });
     }
 
     [HttpPost]
-    public ActionResult<TaskReadDto> Create([FromBody] TaskCreateDto dto)
+    public async Task<ActionResult<TaskReadDto>> Create([FromBody] TaskCreateDto dto, CancellationToken ct)
     {
-        // With [ApiController] + FluentValidation auto-validation, invalid DTO => automatic 400
-        var created = _service.Create(dto);
+        // FluentValidation + [ApiController] => invalid dto returns 400 automatically
+        var created = await _service.CreateAsync(dto, ct);
         return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
     }
 
-    // Optional today (small and useful)
     [HttpPut("{id:int}")]
-    public IActionResult Update(int id, [FromBody] TaskUpdateDto dto)
-    {
-        var ok = _service.Update(id, dto);
-        return ok ? NoContent() : NotFound();
-    }
+    public async Task<IActionResult> Update(int id, [FromBody] TaskUpdateDto dto, CancellationToken ct)
+        => await _service.UpdateAsync(id, dto, ct) ? NoContent() : NotFound(new ProblemDetails
+        {
+            Title = "Task not found.",
+            Status = StatusCodes.Status404NotFound,
+            Type = "https://httpstatuses.com/404",
+            Detail = $"No task with id {id} was found.",
+            Instance = HttpContext.Request.Path
+        });
 
-    // Optional today (small and useful)
     [HttpDelete("{id:int}")]
-    public IActionResult Delete(int id)
-    {
-        var ok = _service.Delete(id);
-        return ok ? NoContent() : NotFound();
-    }
+    public async Task<IActionResult> Delete(int id, CancellationToken ct)
+        => await _service.DeleteAsync(id, ct) ? NoContent() : NotFound(new ProblemDetails
+        {
+            Title = "Task not found.",
+            Status = StatusCodes.Status404NotFound,
+            Type = "https://httpstatuses.com/404",
+            Detail = $"No task with id {id} was found.",
+            Instance = HttpContext.Request.Path
+        });
 }
 

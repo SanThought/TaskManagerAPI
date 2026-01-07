@@ -13,31 +13,32 @@ public sealed class TaskService : ITaskService
         _repo = repo;
     }
 
-    public IEnumerable<TaskReadDto> GetAll()
-        => _repo.GetAll().Select(ToReadDto);
+    public async Task<IEnumerable<TaskReadDto>> GetAllAsync(CancellationToken ct = default)
+        => (await _repo.GetAllAsync(ct)).Select(ToReadDto);
 
-    public TaskReadDto? GetById(int id)
+    public async Task<TaskReadDto?> GetByIdAsync(int id, CancellationToken ct = default)
     {
-        var item = _repo.GetById(id);
+        var item = await _repo.GetByIdAsync(id, ct);
         return item is null ? null : ToReadDto(item);
     }
 
-    public TaskReadDto Create(TaskCreateDto dto)
+    public async Task<TaskReadDto> CreateAsync(TaskCreateDto dto, CancellationToken ct = default)
     {
-        var item = new TaskItem
+	var item = new TaskItem
         {
             Title = dto.Title.Trim(),
             IsCompleted = false,
             CreatedAtUtc = DateTime.UtcNow
         };
 
-        var created = _repo.Add(item);
+        var created = await _repo.AddAsync(item, ct);
         return ToReadDto(created);
     }
 
-    public bool Update(int id, TaskUpdateDto dto)
+    public async Task<bool> UpdateAsync(int id, TaskUpdateDto dto, CancellationToken ct = default)
     {
-        var existing = _repo.GetById(id);
+        // preserve CreatedAtUtc
+        var existing = await _repo.GetByIdAsync(id, ct);
         if (existing is null) return false;
 
         var updated = new TaskItem
@@ -48,11 +49,11 @@ public sealed class TaskService : ITaskService
             CreatedAtUtc = existing.CreatedAtUtc
         };
 
-        return _repo.Update(updated);
+        return await _repo.UpdateAsync(updated, ct);
     }
 
-    public bool Delete(int id)
-        => _repo.Delete(id);
+    public Task<bool> DeleteAsync(int id, CancellationToken ct = default)
+        => _repo.DeleteAsync(id, ct);
 
     private static TaskReadDto ToReadDto(TaskItem item)
         => new(item.Id, item.Title, item.IsCompleted, item.CreatedAtUtc);
