@@ -17,11 +17,11 @@ jobs:
           dotnet-version: "8.0.x"
 
       - name: Restore
-        run: dotnet restore
+        run: dotnet restore ./TaskMaster.sln
 
       - name: Build
-        run: dotnet build --no-restore -c Release
+        run: dotnet build ./TaskMaster.sln --no-restore -c Release
 
       - name: Test
-        run: dotnet test --no-build -c Release
+        run: dotnet test ./TaskMaster.sln --no-build -c Release
 
