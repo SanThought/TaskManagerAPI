@@ -1,0 +1,28 @@
+# Build outputs
+bin/
+obj/
+
+# User/IDE
+.vs/
+.idea/
+*.user
+*.suo
+
+# OS junk
+.DS_Store
+
+# Local DB / data
+App_Data/
+*.db
+*.db-shm
+*.db-wal
+
+# Test results / coverage
+TestResults/
+*.trx
+coverage/
+coverage.*.xml
+
+# Logs
+*.log
+

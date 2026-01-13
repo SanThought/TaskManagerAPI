@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskMasterAPI", ".\TaskMasterAPI.csproj", "{BCF45B14-7E32-4F56-94B4-C0EB8611777B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{4089FC5C-0FF6-48DC-B957-10B2D9365507}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskMasterAPI.Tests", "tests\TaskMasterAPI.Tests\TaskMasterAPI.Tests.csproj", "{38E6F02B-410D-470C-A3A1-9972B8894489}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BCF45B14-7E32-4F56-94B4-C0EB8611777B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCF45B14-7E32-4F56-94B4-C0EB8611777B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCF45B14-7E32-4F56-94B4-C0EB8611777B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCF45B14-7E32-4F56-94B4-C0EB8611777B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38E6F02B-410D-470C-A3A1-9972B8894489}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38E6F02B-410D-470C-A3A1-9972B8894489}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38E6F02B-410D-470C-A3A1-9972B8894489}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38E6F02B-410D-470C-A3A1-9972B8894489}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{38E6F02B-410D-470C-A3A1-9972B8894489} = {4089FC5C-0FF6-48DC-B957-10B2D9365507}
+	EndGlobalSection
+EndGlobal
